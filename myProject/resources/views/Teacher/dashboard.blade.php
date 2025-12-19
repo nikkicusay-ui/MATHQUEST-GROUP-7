@@ -105,18 +105,18 @@
                 </div>
                 <div class="activity-list">
                     @if(!empty($recent_activities))
-                        @foreach($recent_activities as $activity)
-                            <div class="activity-item">
-                                <div class="activity-icon"><i class="fas {{ $activity['icon'] }}"></i></div>
-                                <div class="activity-content">
-                                    <div class="activity-title">{{ $activity['title'] }}</div>
-                                    <div class="activity-desc">{{ $activity['desc'] }}</div>
-                                    <div class="activity-time">{{ $activity['time'] }}</div>
-                                </div>
-                            </div>
-                        @endforeach
+                    @foreach($recent_activities as $activity)
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fas {{ $activity['icon'] }}"></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">{{ $activity['title'] }}</div>
+                            <div class="activity-desc">{{ $activity['desc'] }}</div>
+                            <div class="activity-time">{{ $activity['time'] }}</div>
+                        </div>
+                    </div>
+                    @endforeach
                     @else
-                        <div class="no-activity">No recent activity.</div><br>
+                    <div class="no-activity">No recent activity.</div><br>
                     @endif
                 </div>
             </div>
@@ -131,7 +131,7 @@
                 </div>
 
                 <div class="progress-bar">
-                    <div class="progress-fill" id="class-performance" style="width: {{ floatval($class_average_score) }}%;"></div>
+                    <div class="progress-fill" id="class-performance" style="width: {{ floatval($class_average_score ?? 0) }}%;"></div>
                 </div>
 
                 <p style="margin-top: 15px; font-size: 15px; color: #666;">
@@ -143,4 +143,5 @@
     </div>
     <script src="{{ asset('js/teacher/dashboard.js') }}"></script>
 </body>
+
 </html>
