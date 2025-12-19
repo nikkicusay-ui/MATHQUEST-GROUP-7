@@ -1,52 +1,68 @@
-<?php
-
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Quiz;
 use App\Models\Section;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
     public function index()
     {
-        $teacher = Auth::user();
+        $teacher = Auth::guard('teacher')->user();
 
-        $sections = $teacher->sections()->where('archived', 0)->orderBy('school_year', 'desc')->get();
+        $sections = $teacher->sections()
+            ->where('archived', 0)
+            ->orderByDesc('school_year')
+            ->get();
 
         $quizzes = $teacher->quizzes()
             ->with(['sections', 'questions', 'studentQuizzes'])
-            ->orderBy('date_created', 'desc')
+            ->orderByDesc('created_at')
             ->get();
 
-        $total_questions = Question::count();
+        $total_questions = Question::where('teacher_id', $teacher->teacher_id)->count();
 
         $question_stats = Question::selectRaw("
                 difficulty,
                 COUNT(*) as total,
-                (SELECT COUNT(DISTINCT qq.quiz_id) FROM quiz_questions qq WHERE qq.question_id = questions.question_id) as used,
-                (SELECT COALESCE(SUM(ql.is_correct),0) FROM quiz_logs ql WHERE ql.question_id = questions.question_id) as correct
+                COUNT(DISTINCT qq.quiz_id) as used,
+                COALESCE(SUM(ql.is_correct),0) as correct
             ")
+            ->leftJoin('quiz_questions as qq', 'qq.question_id', '=', 'questions.question_id')
+            ->leftJoin('quiz_logs as ql', 'ql.question_id', '=', 'questions.question_id')
+            ->where('questions.teacher_id', $teacher->teacher_id)
             ->groupBy('difficulty')
             ->get()
             ->groupBy('difficulty');
 
-        $settings = \DB::table('academic_settings')->orderByDesc('setting_id')->first();
-        $current_quarter = $settings->current_quarter ?? '1st';
-        $current_week = $settings->current_week ?? 1;
+        $settings = DB::table('academic_settings')->latest('setting_id')->first();
 
-        return view('teacher.quizzes.index', compact('teacher', 'sections', 'quizzes', 'question_stats', 'total_questions', 'current_quarter', 'current_week'));
+        return view('teacher.quizzes.index', [
+            'teacher' => $teacher,
+            'sections' => $sections,
+            'quizzes' => $quizzes,
+            'question_stats' => $question_stats,
+            'total_questions' => $total_questions,
+            'current_quarter' => $settings->current_quarter ?? '1st',
+            'current_week' => $settings->current_week ?? 1,
+        ]);
     }
 
     public function destroy($id)
     {
-        $teacher = Auth::user();
-        $quiz = Quiz::where('quiz_id', $id)->where('teacher_id', $teacher->teacher_id)->firstOrFail();
+        $teacher = Auth::guard('teacher')->user();
+
+        $quiz = Quiz::where('quiz_id', $id)
+            ->where('teacher_id', $teacher->teacher_id)
+            ->firstOrFail();
+
         $quiz->delete();
 
-        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz deleted successfully');
+        return redirect()
+            ->route('teacher.quizzes.index')
+            ->with('success', 'Quiz deleted successfully');
     }
 }
