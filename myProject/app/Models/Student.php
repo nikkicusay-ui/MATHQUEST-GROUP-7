@@ -3,29 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Student extends Authenticatable
+
+class Student extends Model
 {
-    use HasFactory;
-
+    
     protected $table = 'students';
     protected $primaryKey = 'student_id';
-
+    
     protected $fillable = [
         'lrn',
         'first_name',
         'last_name',
         'passcode',
+        'section_id',
     ];
-
-    protected $hidden = [
-        'passcode',
-    ];
-
-    public function getAuthPassword()
+    
+    public function section()
     {
-        return $this->passcode;
+        return $this->belongsTo(Section::class, 'section_id');
     }
 }
