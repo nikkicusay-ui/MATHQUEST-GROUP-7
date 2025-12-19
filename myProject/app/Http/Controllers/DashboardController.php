@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $teacher = Auth::guard('teacher')->user();
         
         if (!$teacher) {
-            return redirect()->route('teacher.login');
+            return redirect()->route('login');
         }
 
         // Get teacher details

@@ -13,12 +13,7 @@
     --sidebar-bg: #1A1F37;
     --sidebar-text: #CBD5E0;
     --accent-color: #2BD2D6; /* Add this for the lightbulb icon */
-}
 
- {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 body {
