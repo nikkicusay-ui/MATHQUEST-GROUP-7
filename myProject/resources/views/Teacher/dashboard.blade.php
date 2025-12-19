@@ -131,7 +131,7 @@
                 </div>
 
                 <div class="progress-bar">
-                    <div class="progress-fill" id="class-performance" style="width: {{ floatval($class_average_score ?? 0) }}%;"></div>
+                     style="width: {{ floatval($class_average_score ?? 0) }}%;"></div>
                 </div>
 
                 <p style="margin-top: 15px; font-size: 15px; color: #666;">
