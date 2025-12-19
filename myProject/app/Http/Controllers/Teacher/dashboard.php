@@ -68,10 +68,9 @@ class DashboardController extends Controller
         ));
     }
 
-    // Example function to get recent activities
     private function getRecentActivities(Teacher $teacher)
     {
-        // Replace this with your actual recent activities logic
+  
         return [
             ['icon' => 'fa-book', 'title' => 'Uploaded a new learning material', 'desc' => 'Math Module 3', 'time' => '2 hours ago'],
             ['icon' => 'fa-clipboard-list', 'title' => 'Created a new quiz', 'desc' => 'Quiz #5 - Fractions', 'time' => '1 day ago'],

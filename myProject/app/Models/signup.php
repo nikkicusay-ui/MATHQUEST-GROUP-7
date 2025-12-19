@@ -3,27 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Teacher extends Authenticatable
 {
-    // Specify the table name
+    use Notifiable; 
+
+ 
     protected $table = 'teachers';
 
-  
     protected $primaryKey = 'teacher_id';
 
     protected $fillable = [
         'first_name',
-        'middle_name',   
+        'middle_name',
         'last_name',
-        'position',     
+        'position',
         'email',
-        'password_hash'
+        'password_hash',
     ];
-
-    // Fields hidden when converting to arrays or JSON
-    protected $hidden = [
-        'password_hash'
+         protected $hidden = [
+        'password_hash',
+        'remember_token', 
     ];
 
     public function getAuthPassword()

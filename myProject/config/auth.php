@@ -1,9 +1,5 @@
 'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
-    ],
-
+    // existing guards...
     'teacher' => [
         'driver' => 'session',
         'provider' => 'teachers',
@@ -11,11 +7,7 @@
 ],
 
 'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
-    ],
-
+    // existing providers...
     'teachers' => [
         'driver' => 'eloquent',
         'model' => App\Models\Teacher::class,

@@ -156,8 +156,7 @@ class ModuleController extends Controller
 
         return redirect()->back()->with('success', 'Material updated successfully!');
     }
-
-    public function delete(LearningMaterial $material)
+     public function delete(LearningMaterial $material)
     {
         $teacher = Auth::user();
 
