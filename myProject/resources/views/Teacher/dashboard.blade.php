@@ -18,7 +18,7 @@
                 <div class="logo-text">MATHQUEST</div>
             </div>
             <nav class="nav-menu">
-                <a href="{{ route('teacher.dashboard') }}" class="nav-item active">
+                <a href="{{ route('dashboard') }}" class="nav-item active">
                     <i class="fas fa-home nav-icon"></i><span>Dashboard</span>
                 </a>
                 <a href="#" class="nav-item">

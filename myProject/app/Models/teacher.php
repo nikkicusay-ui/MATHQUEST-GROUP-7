@@ -1,9 +1,15 @@
+<?php
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Teacher extends Authenticatable
 {
+    use HasFactory;
+
     protected $table = 'teachers';
     protected $primaryKey = 'teacher_id';
 
@@ -12,25 +18,18 @@ class Teacher extends Authenticatable
         'middle_name',
         'last_name',
         'position',
-        'profile_image',
         'email',
-        'password_hash'
+        'password_hash',
     ];
 
-    protected $hidden = ['password_hash'];
+    protected $hidden = [
+        'password_hash',
+    ];
 
+    // This is important: We are using 'password_hash' as the password field.
+    // But Laravel by default expects 'password'. So we need to tell Laravel to use 'password_hash'.
     public function getAuthPassword()
     {
         return $this->password_hash;
-    }
-
-    public function sections()
-    {
-        return $this->hasMany(Section::class, 'teacher_id', 'teacher_id');
-    }
-
-    public function quizzes()
-    {
-        return $this->hasMany(Quiz::class, 'teacher_id', 'teacher_id');
     }
 }
