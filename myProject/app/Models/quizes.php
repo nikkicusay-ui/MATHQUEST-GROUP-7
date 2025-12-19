@@ -1,30 +1,15 @@
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Quiz extends Model
+class StudentQuiz extends Model
 {
-    protected $table = 'quizzes';
-    protected $primaryKey = 'quiz_id';
+    protected $table = 'student_quizzes';
+    protected $primaryKey = 'student_quiz_id';
+
     protected $fillable = [
-        'teacher_id',
-        'quarter',
-        'week',
-        'quiz_type',
-        'score',
-        'date_created'
+        'quiz_id',
+        'student_id',
+        'score'
     ];
-    public $timestamps = false;
-
-    public function sections()
-    {
-        return $this->belongsToMany(Section::class, 'quiz_sections', 'quiz_id', 'section_id');
-    }
-
-    public function studentQuizzes()
-    {
-        return $this->hasMany(StudentQuiz::class, 'quiz_id', 'quiz_id');
-    }
 }

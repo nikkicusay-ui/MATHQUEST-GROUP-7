@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TeacherAuthController extends Controllers
+class TeacherAuthController extends Controller
 {
     public function showLogin()
     {
@@ -20,14 +20,11 @@ class TeacherAuthController extends Controllers
             'password' => 'required',
         ]);
 
-        // Use the teacher guard
         if (Auth::guard('teacher')->attempt([
             'email' => $request->email,
-            'password' => $request->password, // Laravel will automatically call getAuthPassword()
+            'password' => $request->password,
         ])) {
-            // Regenerate session to prevent fixation
             $request->session()->regenerate();
-
             return redirect()->intended('/teacher/dashboard');
         }
 

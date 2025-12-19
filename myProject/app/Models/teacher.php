@@ -1,5 +1,3 @@
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -8,9 +6,17 @@ class Teacher extends Authenticatable
 {
     protected $table = 'teachers';
     protected $primaryKey = 'teacher_id';
+
     protected $fillable = [
-        'first_name', 'middle_name', 'last_name', 'position', 'profile_image', 'email', 'password_hash'
+        'first_name',
+        'middle_name',
+        'last_name',
+        'position',
+        'profile_image',
+        'email',
+        'password_hash'
     ];
+
     protected $hidden = ['password_hash'];
 
     public function getAuthPassword()
