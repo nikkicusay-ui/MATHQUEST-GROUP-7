@@ -1,0 +1,13 @@
+.sidebar {
+    width: 250px;
+    transition: width 0.3s;
+}
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.progress-fill {
+    background-color: #4caf50;
+    height: 20px;
+    width: 0%;
+}
