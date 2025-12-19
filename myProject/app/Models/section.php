@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Models;
+use App\Models\Quiz;
 
-class Section extends Model
+class Section extends Models
 {
     protected $table = 'sections';
     protected $primaryKey = 'section_id';
@@ -12,6 +13,10 @@ class Section extends Model
 
     public function quizzes()
     {
-        return $this->belongsToMany(Quiz::class, 'quiz_sections', 'section_id', 'quiz_id');
+        return $this->belongsToMany
+        ( Quiz::class,'quiz_sections',
+            'section_id',
+            'quiz_id'
+        );
     }
 }

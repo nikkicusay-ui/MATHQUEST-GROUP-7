@@ -10,72 +10,70 @@ use App\Models\Teacher;
 
 class TeacherAuthController extends Controller
 {
-    // Show login form
     public function showLogin()
     {
-        return view('auth.teacher-login'); // adjust Blade path
+        return view('auth.teacher-login');
     }
-
-    // Handle login
     public function login(Request $request)
     {
         $request->validate([
             'email'    => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $teacher = Teacher::where('email', $request->email)->first();
 
-        if (!$teacher || !Hash::check($request->password, $teacher->password_hash)) {
+        if (!$teacher || !Hash::check($request->password, $teacher->password)) {
             return back()->withErrors([
-                'email' => 'Invalid email or password.'
-            ]);
+                'email' => 'Invalid email or password.',
+            ])->withInput($request->only('email'));
         }
 
-        Auth::login($teacher, $request->remember);
+        Auth::guard('teacher')->login($teacher, $request->has('remember'));
 
-        return redirect()->route('teacher.dashboard');
+        return()->route('teacher.dashboard')
+            ->with('success', "Welcome {$teacher->first_name} {$teacher->last_name}!");
     }
 
-    // Show signup form
     public function showSignup()
     {
-        return view('auth.register'); // adjust Blade path
+        return view('auth.teacher-register');
     }
 
-    // Handle signup
     public function signup(Request $request)
     {
         $request->validate([
-            'firstname' => 'required|string|max:255',
+            'firstname'  => 'required|string|max:255',
             'middlename' => 'nullable|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'email' => 'required|email|unique:teachers,email',
-            'password' => 'required|min:6|confirmed',
-            'terms' => 'accepted',
+            'lastname'   => 'required|string|max:255',
+            'position'   => 'required|string|max:255',
+            'email'      => 'required|email|unique:teachers,email',
+            'password'   => 'required|min:6|confirmed',
+            'terms'      => 'accepted',
         ]);
 
         $teacher = Teacher::create([
             'first_name' => $request->firstname,
-            'middle_name' => $request->middlename,
-            'last_name' => $request->lastname,
-            'position' => $request->position,
-            'email' => $request->email,
-            'password_hash' => Hash::make($request->password),
+            'middle_name'=> $request->middlename,
+            'last_name'  => $request->lastname,
+            'position'   => $request->position,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password),
         ]);
 
-        // Optionally log in the user immediately
-        Auth::login($teacher);
+        Auth::guard('teacher')->login($teacher);
 
         return redirect()->route('teacher.dashboard')
             ->with('success', "Welcome {$teacher->first_name} {$teacher->last_name}, your account has been created!");
     }
 
-    // Handle logout
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('teacher')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('teacher.login');
     }
 }

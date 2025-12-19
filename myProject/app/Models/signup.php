@@ -9,17 +9,16 @@ class Teacher extends Authenticatable
     // Specify the table name
     protected $table = 'teachers';
 
-    // Specify the primary key
+  
     protected $primaryKey = 'teacher_id';
 
-    // Fields that can be mass-assigned (used in signup and updates)
     protected $fillable = [
         'first_name',
-        'middle_name',   // from the second version
+        'middle_name',   
         'last_name',
-        'position',      // from the second version
+        'position',     
         'email',
-        'password_hash'  // used for login
+        'password_hash'
     ];
 
     // Fields hidden when converting to arrays or JSON
@@ -27,7 +26,6 @@ class Teacher extends Authenticatable
         'password_hash'
     ];
 
-    // Tell Laravel which field to use for authentication
     public function getAuthPassword()
     {
         return $this->password_hash;
