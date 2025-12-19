@@ -13,11 +13,8 @@ class Section extends Model
 
     public function quizzes()
     {
-        return $this->belongsToMany(
-            Quiz::class,
-            'quiz_sections',
-            'section_id',
-            'quiz_id'
-        );
+        return $this->belongsToMany;( Quiz::class, 'section_id', 'quiz_id');
+
     }
+
 }
